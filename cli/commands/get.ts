@@ -1,14 +1,7 @@
 import Command from "../command";
 import Globals from "../globals"
-import Database from "../../interfaces/Database";
-import Schema from "../../data/databases/schema.json"
+import QueryType from "../enums/QueryType";
 import * as CRUD from "../../data/crud"
-
-export enum QueryType {
-    Database,
-    Cell
-}
-
 export default {
     name: "get <query>",
     description: "Fetches a cell or database. The data returned is based on the context.",
