@@ -11,16 +11,18 @@ export interface SessionData {
 
 export function authenticateDatabase(session: Session, dbName: string, dbPassword: string) {
     let database = CRUD.getDatabase(dbName)
-    if (!database) return
+    if (!database) return false
 
     let correctPassword = CRUD.validatePassword(dbName, dbPassword)
-    if (!correctPassword) return
+    if (!correctPassword) return false
 
     let data = getSessionDatabase(session)
     data.dbName = dbName
     data.password = dbPassword
     data.authenticated = true
+
     console.log(`Successfully authenticated in database ${dbName}`)
+    return true
 }
 
 export function getSessionDatabase(session: Session) {

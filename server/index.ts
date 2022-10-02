@@ -30,8 +30,9 @@ Server.post("/connect", (req: Request, res: Response) => {
     if (!params.db_username) return res.status(400).send("Please provide a username field.")
     if (!params.db_password) return res.status(400).send("Please provide a password field.")
 
-    Service.authenticateDatabase(req.session, params.db_username, params.db_password)
-    return res.redirect("/")
+    let valid = Service.authenticateDatabase(req.session, params.db_username, params.db_password)
+    if (valid) return res.status(200).redirect("/database")
+    return res.status(401).redirect("/")
 })
 
 Server.post("/disconnect", (req: Request, res: Response) => {
