@@ -69,15 +69,6 @@ export function createDatabase(name: string, password: string) {
     return console.log(`Successfully created database ${name}.`)
 }
 
-export function validatePassword(name: string, password: string) {
-    let database: Database = schema.find((db: Database) => {
-        return db.name == name
-    })
-
-    if (!database) return false
-    return database.password == password
-}
-
 export function exportDatabase(name: string, password: string) {
     let exportJson = `${ExportsPath}/export_${name}_${Date.now()}.json`
     let database = getDatabase(name)
@@ -98,6 +89,29 @@ export function readDatabase(dbName: string) {
     if (!fs.existsSync(path)) return console.log("Database file may be corrupted.")
 
     return fs.readFileSync(path, "utf-8").split(" ")
+}
+
+export function deleteDatabase(name: string, password: string) {
+    let database = getDatabase(name)
+    if (!database) return [false, `Database "${name}" does not exist.`]
+
+    let passwordValid = validatePassword(name, password)
+    if (!passwordValid) return [false, "Invalid password"]
+
+    let databasePath = `${DatabasesPath}/${name}.${settings.databaseExtension}`
+    if (!fs.existsSync(databasePath)) return [false, "Database file does not exist."]
+
+    fs.rmSync(databasePath)
+    return [true, `Successfully deleted ${name}.`]
+}
+
+export function validatePassword(name: string, password: string) {
+    let database: Database = schema.find((db: Database) => {
+        return db.name == name
+    })
+
+    if (!database) return false
+    return database.password == password
 }
 
 export function getKey(key: string, dbName: string, dbPassword: string) {
