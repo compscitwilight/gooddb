@@ -110,7 +110,6 @@ export function deleteDatabase(name: string, password: string) {
     schema.splice(index, 1)
 
     let content = JSON.stringify(schema)
-    //if (content == "") content = "[]" // prevents empty arrays from turning into "", which is not acceptable in JSON
 
     fs.writeFileSync(DatabasesSchema, content)
     fs.rmSync(databasePath)
