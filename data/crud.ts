@@ -101,6 +101,18 @@ export function deleteDatabase(name: string, password: string) {
     let databasePath = `${DatabasesPath}/${name}.${settings.databaseExtension}`
     if (!fs.existsSync(databasePath)) return [false, "Database file does not exist."]
 
+    let dbCredentials = schema.find((db: Database) => {
+        return db.name == name
+    })
+    if (!dbCredentials) return [false, "Couldn't find database in schema.json, therefore it does not exist inside of GoodDB."]
+
+    let index = schema.indexOf(dbCredentials)
+    schema.splice(index, 1)
+
+    let content = JSON.stringify(schema)
+    //if (content == "") content = "[]" // prevents empty arrays from turning into "", which is not acceptable in JSON
+
+    fs.writeFileSync(DatabasesSchema, content)
     fs.rmSync(databasePath)
     return [true, `Successfully deleted ${name}.`]
 }
