@@ -1,0 +1,6 @@
+{
+    "writeToDisk": true,
+    "writeTimeout": 300000,
+    "serverPort": 12500,
+    "databaseExtension": "gdbd"
+}

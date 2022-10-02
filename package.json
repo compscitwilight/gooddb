@@ -1,0 +1,23 @@
+{
+  "name": "gooddb",
+  "version": "1.0.0",
+  "description": "Open-source database",
+  "main": "index.ts",
+  "scripts": {
+    "startServer": "ts-node ./server/index.ts",
+    "cli": "ts-node ./cli/index.ts",
+    "downloadPckgs": "npm install express express-session @types/express @types/express-session"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^4.17.14",
+    "@types/express-session": "^1.17.5",
+    "express": "^4.18.1",
+    "express-session": "^1.17.3",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.1"
+  }
+}

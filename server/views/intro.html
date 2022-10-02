@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="/styles/global.css" rel="stylesheet">
+    <title>Welcome to GoodDB</title>
+</head>
+<body>
+    <h1>Welcome to the GoodDB Server.</h1>
+    <p>You are currently connected to <code id="url"></code></p>
+
+    <h2>Connect to a database.</h2>
+    <a href="/help/databases">(need help?)</a>
+    <form method="POST" action="/connect">
+        <input type="text" name="db_username" placeholder="Database Username">
+        <input type="password" name="db_password" placeholder="Database Password">
+        <button type="submit">Connect</button>
+    </form>
+</body>
+    <script>
+        const urlTag = document.querySelector("#url")
+        let url = location.href.toLowerCase().replace("http", "")
+
+        urlTag.innerHTML = `gooddb${url}`
+    </script>
+</html>
