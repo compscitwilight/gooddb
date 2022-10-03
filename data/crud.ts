@@ -145,6 +145,12 @@ export function getCell(key: string, dbName: string, dbPassword: string) {
 }
 
 export function createCell(type: DataTypes, name: string, value: string, dbName: string, dbPassword: string) {
+    // type validation
+    if (type == DataTypes.int32 && Number(value) == NaN || Number(value) > 2147483647) return [false, "Invalid Int32 value."]
+    if (type == DataTypes.int64 && Number(value) == NaN || Number(value) > 9223372036854775807) return [false, "Invalid Int64 value."]
+    if (type == DataTypes.string && !value) return [false, "Invalid string value."]
+    if (type == DataTypes.array && !Array(value)) return [false, "Invalid array value."]
+
     let database = getDatabase(dbName)
     if (!database) return [false, `Database "${dbName}" does not exist.`]
 
