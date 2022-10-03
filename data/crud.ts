@@ -70,7 +70,7 @@ export function createDatabase(name: string, password: string) {
 }
 
 export function exportDatabase(name: string, password: string) {
-    let exportJson = `${ExportsPath}/export_${name}_${Date.now()}.json`
+    let exportJson = `${ExportsPath}/export_${name}_${Date.now()}.export.gdbd`
     let database = getDatabase(name)
 
     if (!database) return console.log("Database doesn't exist.")
@@ -78,7 +78,16 @@ export function exportDatabase(name: string, password: string) {
     let passwordCorrect = validatePassword(name, password)
     if (!passwordCorrect) return console.log("Incorrect password.")
 
-    fs.writeFileSync(exportJson, "")
+    let data = readDatabase(name, password)
+    if (!data) return console.log("Couldn't fetch data.")
+
+    let dataString = ""
+    for (var i = 0; i < data.length; i++) {
+        let line = data[i]
+        dataString += line
+    }
+
+    fs.writeFileSync(exportJson, `Export created: ${new Date().toUTCString()}\n${dataString}`)
 }
 
 export function readDatabase(dbName: string, dbPassword: string) {
