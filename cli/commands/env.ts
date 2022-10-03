@@ -1,6 +1,5 @@
 import Command from "../command";
 import globals from "../globals";
-import globalEnv from "../../global-env.json"
 export default {
     name: "env <list | get | set | del> <key?> <value?>",
     description: "Allows you to define enviornment variables.",
