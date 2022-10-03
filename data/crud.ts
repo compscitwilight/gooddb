@@ -2,7 +2,7 @@ import settings from "../settings.json"
 import * as fs from "fs"
 import schema from "./databases/schema.json"
 import Database from "../interfaces/Database"
-import * as http from "http"
+import DataTypes from "./DataTypes"
 
 const DatabasesPath = `${__dirname}/databases`
 const DatabasesSchema = `${DatabasesPath}/schema.json`
@@ -144,3 +144,28 @@ export function getCell(key: string, dbName: string, dbPassword: string) {
     return row
 }
 
+export function createCell(type: DataTypes, name: string, value: any, dbName: string, dbPassword: string) {
+    let database = getDatabase(dbName)
+    if (!database) return [false, `Database "${dbName}" does not exist.`]
+
+    let passwordCorrect = validatePassword(dbName, dbPassword)
+    if (!passwordCorrect) return [false, "Incorrect password."]
+
+    let path = `${DatabasesPath}/${dbName}.${settings.databaseExtension}`
+    if (!fs.existsSync(path)) return [false, "Database file does not exist."]
+
+    let data = readDatabase(dbName)
+    if (!data) return [false, "Couldn't read database."]
+
+    let text: string = ""
+    data.push(`${type}:${name}=${value}`)
+
+    for (var i = 0; i < data.length; i++) {
+        let row = data[i]
+        text += row
+    }
+
+    fs.writeFileSync(path, text)
+
+    return [true, `Created ${type}:${name}=${value}.`]
+}
