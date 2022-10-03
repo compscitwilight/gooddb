@@ -81,9 +81,12 @@ export function exportDatabase(name: string, password: string) {
     fs.writeFileSync(exportJson, "")
 }
 
-export function readDatabase(dbName: string) {
+export function readDatabase(dbName: string, dbPassword: string) {
     let databaseExists = getDatabase(dbName)
     if (!databaseExists) return console.log("Database does not exist.")
+
+    let passwordValid = validatePassword(dbName, dbPassword)
+    if (!passwordValid) return
 
     let path = `${DatabasesPath}/${dbName}.${settings.databaseExtension}`
     if (!fs.existsSync(path)) return console.log("Database file may be corrupted.")
@@ -132,7 +135,7 @@ export function getCell(key: string, dbName: string, dbPassword: string) {
     let database = getDatabase(dbName)
     if (!database) return console.log("Database doesn't exist.")
 
-    let data = readDatabase(dbName)
+    let data = readDatabase(dbName, dbPassword)
     if (!data) return console.log("There was an issue while fetching the database cells.")
     let row = data.find((r) => {
         let rowKey = r.split("=")[0]
@@ -160,7 +163,7 @@ export function createCell(type: DataTypes, name: string, value: string, dbName:
     let path = `${DatabasesPath}/${dbName}.${settings.databaseExtension}`
     if (!fs.existsSync(path)) return [false, "Database file does not exist."]
 
-    let data = readDatabase(dbName)
+    let data = readDatabase(dbName, dbPassword)
     if (!data) return [false, "Couldn't read database."]
 
     let text: string = ""
