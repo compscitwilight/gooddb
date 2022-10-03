@@ -144,7 +144,7 @@ export function getCell(key: string, dbName: string, dbPassword: string) {
     return row
 }
 
-export function createCell(type: DataTypes, name: string, value: any, dbName: string, dbPassword: string) {
+export function createCell(type: DataTypes, name: string, value: string, dbName: string, dbPassword: string) {
     let database = getDatabase(dbName)
     if (!database) return [false, `Database "${dbName}" does not exist.`]
 
@@ -158,7 +158,7 @@ export function createCell(type: DataTypes, name: string, value: any, dbName: st
     if (!data) return [false, "Couldn't read database."]
 
     let text: string = ""
-    data.push(`${type}:${name}=${value}`)
+    data.push(` ${type}:${name}=${value} `)
 
     for (var i = 0; i < data.length; i++) {
         let row = data[i]

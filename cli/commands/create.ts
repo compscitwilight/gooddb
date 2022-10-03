@@ -2,6 +2,7 @@ import Command from "../command";
 import * as CRUD from "../../data/crud"
 import globals from "../globals";
 import QueryType from "../enums/ContextType";
+import GoodDBDataType from "../../data/DataTypes";
 
 const DatabaseNameLimit = 75
 const DatabaseNameMin = 3
@@ -23,6 +24,9 @@ export default {
                 break
             case QueryType.Cell:
                 let cellType = args[1]
+                let dataTypeValues = Object.keys(GoodDBDataType)
+                if (!dataTypeValues.includes(cellType)) return console.log("Invalid datatype.")
+
                 let cellName = args[2]
                 let cellValue = args[3]
 
@@ -30,7 +34,13 @@ export default {
                 if (!cellName) return console.log("Missing name argument.")
                 if (!cellValue) return console.log("Missing value argument.")
 
-
+                let [cellStatus, cellResponse] = CRUD.createCell(GoodDBDataType[cellType],
+                    cellName,
+                    cellValue,
+                    globals.database,
+                    globals.databasePassword
+                )
+                console.log(cellResponse)
                 break
         }
     }

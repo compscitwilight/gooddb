@@ -1,6 +1,7 @@
 import Command from "../command";
 import Globals, { connectToDatabase, disconnectFromDatabase } from "../globals"
 import * as CRUD from "../../data/crud"
+import DatabaseStats from "../../interfaces/DatabaseStats";
 export default {
     name: "connect <db_name> <db_password>",
     description: "Connects to a GoodDB database.",
@@ -12,8 +13,9 @@ export default {
         if (!password) return console.log("Missing password argument")
 
         name = name.toLowerCase()
-        let database = CRUD.getDatabase(name)
-        if (!database) return console.log(`Invalid database "${name}"`)
+        let [status, database] = CRUD.getDatabase(name)
+        if (!status) return console.log(`Invalid database "${name}"`)
+        database = (database as DatabaseStats)
 
         let validPassword = CRUD.validatePassword(name, password)
         if (!validPassword) return console.log("Incorrect password")
