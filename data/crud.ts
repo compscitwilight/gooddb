@@ -125,7 +125,7 @@ export function validatePassword(name: string, password: string) {
     return database.password == password
 }
 
-export function getKey(key: string, dbName: string, dbPassword: string) {
+export function getCell(key: string, dbName: string, dbPassword: string) {
     let validated = validatePassword(dbName, dbPassword)
     if (!validated) return console.log("Incorrect password.")
 
@@ -143,3 +143,4 @@ export function getKey(key: string, dbName: string, dbPassword: string) {
     if (!row) return console.log(`Couldn't find "${key}".`)
     return row
 }
+

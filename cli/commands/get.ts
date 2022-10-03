@@ -52,7 +52,7 @@ export default {
                     return
                 }
 
-                let cellData = CRUD.getKey(query, Globals.database, Globals.databasePassword)
+                let cellData = CRUD.getCell(query, Globals.database, Globals.databasePassword)
                 console.log(cellData)
 
                 break
