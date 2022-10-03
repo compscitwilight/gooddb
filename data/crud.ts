@@ -147,12 +147,13 @@ export function getCell(key: string, dbName: string, dbPassword: string) {
     let data = readDatabase(dbName, dbPassword)
     if (!data) return console.log("There was an issue while fetching the database cells.")
     let row = data.find((r) => {
-        let rowKey = r.split("=")[0]
+        let rowKey = r.split(":")[1].split("=")[0]
+        console.log(rowKey)
         let value = r.split("=")[1]
         return rowKey == key
     })
 
-    if (!row) return console.log(`Couldn't find "${key}".`)
+    //if (!row) return console.log(`Couldn't find "${key}".`)
     return row
 }
 
@@ -186,4 +187,17 @@ export function createCell(type: DataTypes, name: string, value: string, dbName:
     fs.writeFileSync(path, text)
 
     return [true, `Created ${type}:${name}=${value}.`]
+}
+
+export function setCell(name: string, value: string, dbName: string, dbPassword: string) {
+    let database = getDatabase(dbName)
+    if (!database) return [false, "Database doesn't exist."]
+
+    let passwordCorrect = validatePassword(dbName, dbPassword)
+    if (!passwordCorrect) return [false, "Incorrect password."]
+
+    let cell = getCell(name, dbName, dbPassword)
+    if (!cell) return [false, "Cell doesn't exist."]
+
+    return [true, "yeezus"]
 }

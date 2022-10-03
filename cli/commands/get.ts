@@ -37,7 +37,7 @@ export default {
                 break
             case ContextType.Cell:
                 if (query == "*") {
-                    let dbData = CRUD.readDatabase(Globals.database)
+                    let dbData = CRUD.readDatabase(Globals.database, Globals.databasePassword)
                     if (!dbData) return console.log("Cannot fetch database cells.")
 
                     let renderCount = dbData.length > 10 ? 10 : dbData.length
