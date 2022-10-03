@@ -2,6 +2,7 @@ import Command from "../command";
 import Globals from "../globals"
 import ContextType from "../enums/ContextType";
 import * as CRUD from "../../data/crud"
+import { Stats } from "fs"
 export default {
     name: "get <query>",
     description: "Fetches a cell or database. The data returned is based on the context.",
@@ -19,7 +20,7 @@ export default {
         switch (queryType) {
             case ContextType.Database:
                 if (query == "*") {
-                    let databases = CRUD.getAllDatabases()
+                    let [dbStatus, databases] = CRUD.getAllDatabases()
                     console.log(`Found ${databases.length} databases:`)
                     databases.forEach((database) => {
                         if (!database) return console.log("Unknown Database")
@@ -28,9 +29,11 @@ export default {
                     return
                 }
 
-                let dbData = CRUD.getDatabase(query)
-                if (!dbData) return console.log(`No results found for "${query}".`)
-                console.log(`Found database: ${dbData.name} | ${dbData.stats.size} | ${dbData.stats.birthtime}`)
+                let [dataStatus, dbData] = CRUD.getDatabase(query)
+                if (!dataStatus) return console.log(`No results found for "${query}".`)
+
+                let data = (dbData as { name: string, stats: Stats })
+                console.log(`Found database: ${data.name} | ${data.stats.size} | ${data.stats.birthtime}`)
                 break
             case ContextType.Cell:
                 if (query == "*") {

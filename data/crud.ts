@@ -21,15 +21,15 @@ export function getDatabase(name: string) {
         return db == `${name}.${settings.databaseExtension}`
     })
 
-    if (!database) return false
+    if (!database) return [false, "Database doesn't exist."]
 
     let path = `${DatabasesPath}/${database}`
     let data = fs.statSync(path)
 
-    return {
+    return [true, {
         name: database,
         stats: data
-    }
+    }]
 }
 
 export function getAllDatabases() {
