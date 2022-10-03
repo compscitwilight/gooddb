@@ -88,7 +88,7 @@ export function readDatabase(dbName: string) {
     let path = `${DatabasesPath}/${dbName}.${settings.databaseExtension}`
     if (!fs.existsSync(path)) return console.log("Database file may be corrupted.")
 
-    return fs.readFileSync(path, "utf-8").split(" ")
+    return fs.readFileSync(path, "utf-8").split("\n")
 }
 
 export function deleteDatabase(name: string, password: string) {
@@ -158,11 +158,11 @@ export function createCell(type: DataTypes, name: string, value: string, dbName:
     if (!data) return [false, "Couldn't read database."]
 
     let text: string = ""
-    data.push(` ${type}:${name}=${value} `)
+    data.push(`${type}:${name}=${value}`)
 
     for (var i = 0; i < data.length; i++) {
         let row = data[i]
-        text += row
+        text += `${row}\n`.substring(0)
     }
 
     fs.writeFileSync(path, text)
