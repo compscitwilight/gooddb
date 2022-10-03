@@ -8,7 +8,7 @@ const DatabaseNameLimit = 75
 const DatabaseNameMin = 3
 
 export default {
-    name: "create <cellType?> <name> <value?> <password?>",
+    name: "create <cellType?> <name> <value | password>",
     description: "Creates a database or cell depending on the context.",
     invoke: function (args: string[]) {
         let context: QueryType = globals.connectedToDB ? QueryType.Cell : QueryType.Database
