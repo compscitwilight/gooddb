@@ -1,6 +1,6 @@
 import Command from "../command";
 import Globals from "../globals"
-import QueryType from "../enums/QueryType";
+import ContextType from "../enums/ContextType";
 import * as CRUD from "../../data/crud"
 export default {
     name: "get <query>",
@@ -12,12 +12,12 @@ export default {
         query = query.toLowerCase()
 
         let connected = Globals.connectedToDB
-        let queryType: QueryType = QueryType.Cell
+        let queryType: ContextType = ContextType.Cell
 
-        if (!connected) queryType = QueryType.Database
+        if (!connected) queryType = ContextType.Database
 
         switch (queryType) {
-            case QueryType.Database:
+            case ContextType.Database:
                 if (query == "*") {
                     let databases = CRUD.getAllDatabases()
                     console.log(`Found ${databases.length} databases:`)
@@ -32,7 +32,7 @@ export default {
                 if (!dbData) return console.log(`No results found for "${query}".`)
                 console.log(`Found database: ${dbData.name} | ${dbData.stats.size} | ${dbData.stats.birthtime}`)
                 break
-            case QueryType.Cell:
+            case ContextType.Cell:
                 if (query == "*") {
                     let dbData = CRUD.readDatabase(Globals.database)
                     if (!dbData) return console.log("Cannot fetch database cells.")
